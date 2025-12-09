@@ -70,19 +70,35 @@ proyecto_nombre/
 - pandas
 - matplotlib
 - streamlit
-- Conexión a base de dato: sqlalchemy -> Se importa 'create_engine'
+- Conexión a base de dato: sqlite3 
 - API's: requests
+- os: para el manejo de rutas de archivos
+- csv: lee y escribe los csv
+- unicodedata: normaliza textos
+- sklearn
+- seaborn
 ---
 
 ## 🌐 CSV: Instituto Costarricense de Turismo.
 ```
 Link: https://www.ict.go.cr/es/estadisticas/informes-estadisticos.html
+
+CSV -> 'data/raw':
+
+1. turismo_anios.csv
+2. zonas_aerea.csv
 ```
 ---
 
 ## 🔌 API de Clima: Open-Meteo
 ```
 Link: https://open-meteo.com/
+
+CSV -> 'data/processed': Estos se crean a partir de la clase ClienteAPI.
+
+1. clima_anual_2013.csv -> Se puede cambiar el año.
+2. clima_resumen_anual.csv -> Clima histórico (2013 - 2024 (Costa Rica)).
+3. Coordenadas_Paises.csv -> Latitud y Longitud. 
 ```
 ---
 **Este proyecto es únicamente para fines académicos como parte de nuestro Examen III de Programación - Big Data.**
