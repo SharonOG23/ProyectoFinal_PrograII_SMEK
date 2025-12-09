@@ -53,38 +53,38 @@ class ClienteAPI():  # Creamos la clase.
 
 #----------------------------------------------------------------------------------------------------------------------#
 # Metodo #2: Clima Anual.
-    def clima_anual(self, year, lat=10, lon=-84, filename=None):
+    def clima_anual(self, year, lat=10, lon=-84, filename=None):  # Descargar datos climáticos anuales y guardarlos en un CSV.
 
-        url = "https://archive-api.open-meteo.com/v1/archive"
+        url = "https://archive-api.open-meteo.com/v1/archive"  # API de Open-Meteo para datos históricos.
 
-        params = {
-            "latitude": lat,
-            "longitude": lon,
-            "start_date": f"{year}-01-01",
-            "end_date": f"{year}-12-31",
-            "daily": "temperature_2m_max,temperature_2m_min,precipitation_sum",
-            "timezone": "auto"
-        }
+        params = {  # Parámetros de la solicitud API.
+                "latitude": lat,
+                "longitude": lon,
+                "start_date": f"{year}-01-01",
+                "end_date": f"{year}-12-31",
+                "daily": "temperature_2m_max,temperature_2m_min,precipitation_sum",
+                "timezone": "auto"
+            }
 
-        response = requests.get(url, params=params)
-        data = response.json()
+        response = requests.get(url, params=params)  # Realizar la solicitud GET a la API.
+        data = response.json()  # Convertir la respuesta JSON en un diccionario de Python.
 
-        df = pd.DataFrame({
-            "date": data["daily"]["time"],
-            "temp_max": data["daily"]["temperature_2m_max"],
-            "temp_min": data["daily"]["temperature_2m_min"],
-            "rain_mm": data["daily"]["precipitation_sum"]
-        })
+        df = pd.DataFrame({  # Crear un DataFrame con los datos relevantes.
+                "date": data["daily"]["time"],
+                "temp_max": data["daily"]["temperature_2m_max"],
+                "temp_min": data["daily"]["temperature_2m_min"],
+                "rain_mm": data["daily"]["precipitation_sum"]
+            })
 
-        df["temp_avg"] = (df["temp_max"] + df["temp_min"]) / 2
+        df["temp_avg"] = (df["temp_max"] + df["temp_min"]) / 2  # Calcular la temperatura promedio diaria.
 
-        if filename is None:
+        if filename is None:  # Asignar un nombre de archivo predeterminado si no se proporciona uno.
             filename = f"clima_anual_{year}.csv"
 
-        os.makedirs(data_processed, exist_ok=True)
-        ruta = os.path.join(data_processed, filename)
+        os.makedirs(data_processed, exist_ok=True)  # Crear el directorio si no existe.
+        ruta = os.path.join(data_processed, filename)  # Construir la ruta completa del archivo.
 
-        df.to_csv(ruta, index=False, encoding="utf-8")
+        df.to_csv(ruta, index=False, encoding="utf-8")  # Guardar el DataFrame en un archivo CSV.
         print(f"Archivo {ruta} creado con éxito ✅")
 
         return df
