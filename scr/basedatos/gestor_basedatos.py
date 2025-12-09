@@ -56,18 +56,26 @@ class BD:
 
     # Creación Tabla Registro
         self.cursor.execute("""
-
-        CREATE TABLE IF NOT EXISTS Registro (
-        IdRegistro INTEGER PRIMARY KEY AUTOINCREMENT,
-        IdPais INTEGER NOT NULL,
-        Id_medio INTEGER NOT NULL,
-        AnioRegistro INTEGER,   
-        Detalle VARCHAR(255),
-        FOREIGN KEY (IdPais) REFERENCES Pais(IdPais),
-        FOREIGN KEY (Id_medio) REFERENCES MedioIngreso(Id_medio)
-        
-        )
+        CREATE TABLE IF NOT EXISTS Total_Ingresos_Anuales (
+            Id_Registro INTEGER PRIMARY KEY AUTOINCREMENT,
+            ANNIOS INTEGER NOT NULL,
+            TOTAL INTEGER NOT NULL,
+            CANADA INTEGER,
+            ESTADOSUNIDOS INTEGER,
+            MEXICO INTEGER,
+            BELICE INTEGER,
+            ELSALVADOR INTEGER,
+            GUATEMALA INTEGER,
+            HONDURAS INTEGER,
+            NICARAGUA INTEGER,
+            PANAMA INTEGER,
+            AMERICADELSUR INTEGER,
+            CARIBE INTEGER,
+            EUROPA INTEGER,
+            OTRASZONAS INTEGER
+        );
         """)
+        self.conn.commit()
 
     #Metodo que determina a cual continente pertece al pais segun las coordenadas
     def determinar_continente(self, lat, lon):
@@ -132,6 +140,34 @@ class BD:
 
         sql = "INSERT INTO MedioIngreso (NombreLugar, TipoMedio) VALUES (?, ?)"
         self.cursor.executemany(sql, registros)
+        self.conn.commit()
+
+    #Limpieza CSV turismo_annios_clean.csv
+    def limpiar_dataframe_turismo(self,df):
+        """
+        Elimina columnas específicas y renombra otras en un DataFrame.
+        - Elimina: AMARICADELNORTE, AMARICACENTRAL
+        - Renombra: MAXICO -> MEXICO, AMARICADELSUR -> AMERICA DEL SUR
+        """
+        # 1. Eliminar columnas no deseadas
+        columnas_a_eliminar = ["AMARICADELNORTE", "AMARICACENTRAL"]
+        df = df.drop(columns=columnas_a_eliminar, errors="ignore")
+
+        # 2. Renombrar columnas
+        columnas_a_renombrar = {
+            "MAXICO": "MEXICO",
+            "AMARICADELSUR": "AMERICADELSUR"
+        }
+        df = df.rename(columns=columnas_a_renombrar)
+        return df
+
+    def insertar_total_ingresos_anuales(self, df: pd.DataFrame):
+        """
+        Inserta los registros de un DataFrame en la tabla Total_Ingresos_Anuales.
+        El DataFrame debe tener las columnas con los mismos nombres que la tabla.
+        """
+        df.to_sql("Total_Ingresos_Anuales", self.conn, if_exists="append", index=False)
+        print("✅ DataFrame insertado correctamente en la tabla Total_Ingresos_Anuales.")
         self.conn.commit()
 
     #Metodo para poder realizar consultas a las tablas

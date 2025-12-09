@@ -5,6 +5,10 @@ from eda.procesador_eda import ProcesadorEDA as eda
 from basedatos.gestor_basedatos import BD
 import pandas as pd
 
+#PARAMETROS PARA VER LOS df COMPLETOS SIN CORTES
+#pd.set_option("display.max_rows", None)
+#pd.set_option("display.max_columns", None)
+
 """"
 #----------------------------------------------------------------------------------------------------------------------#
 # Clase = ClienteAPI / Instancia para consultar las API's
@@ -79,6 +83,10 @@ basedatos.insertar_clima(df_clima_resumen,44)
 #Tabla MedioIngreso
 basedatos.insertar_medios_ingreso()
 
+#Tabla Total_Ingresos_Anuales
+#Limpieza CSV turismo_anios_clean  --df_turismo_anual
+limpieza=basedatos.limpiar_dataframe_turismo(df_turismo_anual)
+basedatos.insertar_total_ingresos_anuales(limpieza)
 #----------------------------------------------------------------------------------------------------------------------#
 #Consulta de las tablas
 
@@ -93,3 +101,9 @@ print(f"Tabla Clima Anual CR \n {consulta_clima}")
 #Consulta Tabla MedioIngreso
 consulta_medioIngreso=basedatos.consultar_tabla('MedioIngreso')
 print(f"Tabla MedioIngreso \n {consulta_medioIngreso}")
+
+#Consulta Total_Ingresos_Anuales
+consulta_Registro=basedatos.consultar_tabla('Total_Ingresos_Anuales')
+print(f"Tabla Total_Ingresos_Anuales \n {consulta_Registro}")
+
+
