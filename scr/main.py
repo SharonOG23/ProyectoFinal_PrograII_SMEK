@@ -3,6 +3,8 @@ from api.api import ClienteAPI
 from datos.gestor_datos import GestorDatos
 from eda.procesador_eda import ProcesadorEDA as eda
 from basedatos.gestor_basedatos import BD
+from modelos.modelo_ml import ModeloML
+from helpers.utilidades import Utilidades
 import pandas as pd
 
 #PARAMETROS PARA VER LOS df COMPLETOS SIN CORTES
@@ -39,7 +41,6 @@ eda_zonas.ejecutar_eda('zonas_aereas_clean.csv')
 #----------------------------------------------------------------------------------------------------------------------#
 #Ejecucion base datos(Actualizacion)
 
-#----------------------------------------------------------------------------------------------------------------------#
 #Carga de los archivos CSV processed
 
 #Archivo clima_anual_2013.csv
@@ -64,8 +65,6 @@ df_turismo_anual=pd.DataFrame(turismo_anual.retornar_csv())
 #Archivo zonas_aereas_clean.csv
 zonas_aereas=GestorDatos('data/processed/zonas_aereas_clean.csv')
 df_zonas_aereas=pd.DataFrame(zonas_aereas.retornar_csv())
-
-
 
 #----------------------------------------------------------------------------------------------------------------------#
 #Creacion base datos
@@ -106,4 +105,52 @@ print(f"Tabla MedioIngreso \n {consulta_medioIngreso}")
 consulta_Registro=basedatos.consultar_tabla('Total_Ingresos_Anuales')
 print(f"Tabla Total_Ingresos_Anuales \n {consulta_Registro}")
 
+#----------------------------------------------------------------------------------------------------------------------#
+# Clase: Modelo ML / Instancia para crear nuestros modelo de prediccion.
 
+# Define de funcion principal
+def main():
+
+    # Carga datos
+    df_turismo = Utilidades.cargar_csv("../data/processed/turismo_anios_clean.csv")
+    df_clima = Utilidades.cargar_csv("../data/processed/clima_resumen_anual.csv")
+
+    if df_turismo is None or df_clima is None:
+        print("No se pudieron cargar los CSV.")
+        return
+
+    # Prepara clima, seleccionando los las columnas a utilizar del df
+    df_clima_anual = df_clima[["year", "temp_avg"]].rename(columns={
+        "year": "ANNIOS",
+        "temp_avg": "temperatura_promedio"
+    })
+
+   # combina turismo y clima
+    df_merged = df_turismo.merge(df_clima_anual, on="ANNIOS", how="left")
+
+    # hace una limpieza por si habia algo
+    df_merged = df_merged.replace("\s+", "", regex=True)
+
+    for col in df_merged.columns: # convierte en numerico
+        df_merged[col] = pd.to_numeric(df_merged[col], errors="ignore") #mantiene dato original y no lanza error
+
+    df_merged = df_merged.fillna(0) # remplaza nulos por 0
+
+    print("\nDatos listos:")
+    print(df_merged.head()) # muestra las primeras 5 filas listas
+
+    # Entrenar modelos
+    modelo = ModeloML(df_merged, "TOTAL")
+    resultados = modelo.entrenar_todos()
+
+    print("RESULTADOS")
+    for nombre, mse in resultados.items(): # Recorre los resultados
+        print(f"{nombre}: {mse}") # muestra el nombre del modelo y su valor
+
+    print("\nPrueba completada")
+
+if __name__ == "__main__":
+    main()
+
+#----------------------------------------------------------------------------------------------------------------------#
+# Clase: Visualizador
