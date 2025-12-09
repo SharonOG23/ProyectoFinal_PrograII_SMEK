@@ -4,6 +4,8 @@ from datos.gestor_datos import GestorDatos
 from eda.procesador_eda import ProcesadorEDA as eda
 from basedatos.gestor_basedatos import BD
 import pandas as pd
+
+""""
 #----------------------------------------------------------------------------------------------------------------------#
 # Clase = ClienteAPI / Instancia para consultar las API's
 cliente_api = ClienteAPI()
@@ -27,6 +29,8 @@ eda_turismo.ejecutar_eda('turismo_anios_clean.csv')
 
 eda_zonas = eda(zonas.df)
 eda_zonas.ejecutar_eda('zonas_aereas_clean.csv')
+
+"""
 
 #----------------------------------------------------------------------------------------------------------------------#
 #Ejecucion base datos(Actualizacion)
@@ -58,6 +62,7 @@ zonas_aereas=GestorDatos('data/processed/zonas_aereas_clean.csv')
 df_zonas_aereas=pd.DataFrame(zonas_aereas.retornar_csv())
 
 
+
 #----------------------------------------------------------------------------------------------------------------------#
 #Creacion base datos
 basedatos=BD("MigracionCR")
@@ -69,7 +74,10 @@ basedatos.crear_tabla()
 basedatos.insertar_paises(df_paises)
 
 #Tabla Clima
-basedatos.cargar_clima(df_clima_resumen,44)
+basedatos.insertar_clima(df_clima_resumen,44)
+
+#Tabla MedioIngreso
+basedatos.insertar_medios_ingreso()
 
 #----------------------------------------------------------------------------------------------------------------------#
 #Consulta de las tablas
@@ -81,3 +89,7 @@ print(f"Tabla Pais \n {consulta_pais}")
 #Consulta Tabla Clima Anual Costa Rica
 consulta_clima=basedatos.consultar_tabla('Clima')
 print(f"Tabla Clima Anual CR \n {consulta_clima}")
+
+#Consulta Tabla MedioIngreso
+consulta_medioIngreso=basedatos.consultar_tabla('MedioIngreso')
+print(f"Tabla MedioIngreso \n {consulta_medioIngreso}")

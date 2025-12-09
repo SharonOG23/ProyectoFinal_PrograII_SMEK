@@ -102,7 +102,7 @@ class BD:
         self.conn.commit()
 
     #Metodo para llenar la tabla Clima
-    def cargar_clima(self, df, id_pais: int):
+    def insertar_clima(self, df, id_pais: int):
 
         for row in df.itertuples(index=False):
             self.cursor.execute("""
@@ -119,10 +119,19 @@ class BD:
         self.conn.commit()
 
     # Metodo para insertar medios
-    def agregar_medio_ingreso(self):
-        self.cursor.execute("""
-                        INSERT INTO MedioIngreso  (NombreLugar, TipoMedio) VALUES ("Aeropuerto Juan Santa Maria", "Aeropuerto")
-                    """)
+    def insertar_medios_ingreso(self):
+        registros = [
+            ("Aeropuerto Juan Santa Maria", "Aeropuerto"),
+            ("Daniel Oduber", "Aeropuerto"),
+            ("Tobias Bolaños", "Aeropuerto"),
+            ("Limon", "Aeropuerto"),
+            ("Terrestre y Fluvial", "Terrestre y Fluvial"),
+            ("Maritima", "Maritima")
+
+        ]
+
+        sql = "INSERT INTO MedioIngreso (NombreLugar, TipoMedio) VALUES (?, ?)"
+        self.cursor.executemany(sql, registros)
         self.conn.commit()
 
     #Metodo para poder realizar consultas a las tablas
