@@ -152,5 +152,3 @@ class visualizador:
         plt.show()
 
 
-
-

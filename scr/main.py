@@ -7,6 +7,9 @@ from modelos.modelo_ml import ModeloML
 from helpers.utilidades import Utilidades
 import pandas as pd
 
+import os
+from scr.visualizacion.visualizador import visualizador
+
 #PARAMETROS PARA VER LOS df COMPLETOS SIN CORTES
 #pd.set_option("display.max_rows", None)
 #pd.set_option("display.max_columns", None)
@@ -37,7 +40,7 @@ eda_zonas = eda(zonas.df)
 eda_zonas.ejecutar_eda('zonas_aereas_clean.csv')
 
 """
-
+""""
 #----------------------------------------------------------------------------------------------------------------------#
 #Ejecucion base datos(Actualizacion)
 
@@ -106,6 +109,7 @@ consulta_Registro=basedatos.consultar_tabla('Total_Ingresos_Anuales')
 print(f"Tabla Total_Ingresos_Anuales \n {consulta_Registro}")
 
 #----------------------------------------------------------------------------------------------------------------------#
+
 # Clase: Modelo ML / Instancia para crear nuestros modelo de prediccion.
 
 # Define de funcion principal
@@ -151,6 +155,10 @@ def main():
 
 if __name__ == "__main__":
     main()
-
+"""
 #----------------------------------------------------------------------------------------------------------------------#
 # Clase: Visualizador
+
+
+
+
