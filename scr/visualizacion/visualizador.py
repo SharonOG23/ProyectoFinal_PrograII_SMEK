@@ -112,8 +112,10 @@ class visualizador:
     # ---------------------------------------------------------------
     # GRÁFICOS
     # ---------------------------------------------------------------
+    #mapa paises se genera del csv Coordenadas_paises
+    def mapa_paises(self):
+        df = pd.read_csv(self.ruta_archivo)
 
-    def mapa_paises(self, df):
         plt.figure(figsize=(10, 6))
         plt.scatter(df["Longitud"], df["Latitud"])
 
@@ -126,7 +128,9 @@ class visualizador:
         plt.grid(True)
         plt.show()
 
-    def grafico_tendencia_total(self, df):
+    def grafico_tendencia_total(self):
+        df = pd.read_csv(self.ruta_archivo)
+
         plt.figure(figsize=(10, 5))
         plt.plot(df["ANINOS"], df["TOTAL"], marker="o")
         plt.title("Tendencia anual del turismo total en Costa Rica")
@@ -135,16 +139,21 @@ class visualizador:
         plt.grid(True)
         plt.show()
 
-    def heatmap_paises(self, df):
+    def heatmap_paises(self):
+        df = pd.read_csv(self.ruta_archivo)
+
         df_temp = df.set_index("ANINOS").drop(columns=["TOTAL"])
+
         plt.figure(figsize=(14, 8))
         sns.heatmap(df_temp, cmap="YlGnBu")
         plt.title("Heatmap de turismo por país y año")
         plt.show()
 
     def grafico_barras_horizontales(self, columna, titulo="Barras Horizontales por Zona"):
+        df = pd.read_csv(self.ruta_archivo)
+
         plt.figure(figsize=(10, 7))
-        plt.barh(self.df["IZONAS"], self.df[columna])
+        plt.barh(df["IZONAS"], df[columna])
         plt.title(titulo)
         plt.xlabel(columna)
         plt.ylabel("Zonas")
