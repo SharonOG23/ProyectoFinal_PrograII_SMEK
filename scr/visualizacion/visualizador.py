@@ -3,7 +3,9 @@ import os
 import csv
 import matplotlib.pyplot as plt
 import seaborn as sns
-
+import folium
+from folium.plugins import MarkerCluster
+from streamlit_folium import st_folium
 
 # Definición clase visualizador
 class visualizador:
@@ -113,20 +115,33 @@ class visualizador:
     # GRÁFICOS
     # ---------------------------------------------------------------
     #este grafico se genera apartir del archivo Coordenadas_Pises.csv
+
     def mapa_paises(self):
+
+
+        # Cargar CSV
         df = pd.read_csv(self.ruta_archivo)
 
-        plt.figure(figsize=(10, 6))
-        plt.scatter(df["Longitud"], df["Latitud"])
+        # Crear mapa centrado en el promedio de los puntos
+        centro_lat = df["Latitud"].mean()
+        centro_lon = df["Longitud"].mean()
 
-        for i, row in df.iterrows():
-            plt.text(row["Longitud"], row["Latitud"], row["Pais"], fontsize=8)
+        mapa = folium.Map(location=[centro_lat, centro_lon], zoom_start=2, tiles="CartoDB positron")
 
-        plt.title("Ubicación geográfica de países de origen")
-        plt.xlabel("Longitud")
-        plt.ylabel("Latitud")
-        plt.grid(True)
-        plt.show()
+        # Agrupación de marcadores
+        marker_cluster = MarkerCluster().add_to(mapa)
+
+        # Agregar puntos al mapa
+        for _, row in df.iterrows():
+            folium.Marker(
+                location=[row["Latitud"], row["Longitud"]],
+                tooltip=row["Pais"],
+                popup=f"<b>{row['Pais']}</b>",
+                icon=folium.Icon(color="darkblue", icon="info-sign")
+            ).add_to(marker_cluster)
+
+        return mapa
+
     #este grafico se genera apartir de el archivo turismo_anios_clean.csv
     def grafico_tendencia_total(self):
         df = pd.read_csv(self.ruta_archivo)
@@ -170,23 +185,24 @@ class visualizador:
             if col != "IZONAS" and pd.api.types.is_numeric_dtype(df[col])
         ]
 
+        figuras = []  # <-- aquí guardamos cada figura
+
         # Generar un gráfico por cada columna
         for col in columnas_numericas:
-            plt.figure(figsize=(10, 7))
-            plt.barh(df["IZONAS"], df[col])
-            plt.title(f"Llegadas por zona - {col}")
-            plt.xlabel(col)
-            plt.ylabel("Zonas")
+            fig, ax = plt.subplots(figsize=(10, 7))
+            ax.barh(df["IZONAS"], df[col])
+            ax.set_title(f"Llegadas por zona - {col}")
+            ax.set_xlabel(col)
+            ax.set_ylabel("Zonas")
             plt.tight_layout()
-            plt.show()
 
+            figuras.append(fig)  # <-- agregamos la figura a la lista
+
+        return figuras  # <-- Streamlit recibirá todas las figuras
 
 
 #Scrip de prueba de graficos
- #mapa_paises
-ruta_mapa = r"C:\Proyecto_final_Programacion2\ProyectoFinal_PrograII_SMEK\data\processed\Coordenadas_Paises.csv"
-viz_mapa=visualizador(ruta_mapa)
-viz_mapa.mapa_paises()
+
 #tendencia total
 ruta_mapa2 = r"C:\Proyecto_final_Programacion2\ProyectoFinal_PrograII_SMEK\data\processed\turismo_anios_clean.csv"
 viz_mapa_02 = visualizador(ruta_mapa2)
