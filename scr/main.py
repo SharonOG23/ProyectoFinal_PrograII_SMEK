@@ -109,7 +109,7 @@ print(f"Tabla Total_Ingresos_Anuales \n {consulta_Registro}")
 
 """
 
-"""
+
 #----------------------------------------------------------------------------------------------------------------------#
 # Clase: Modelo ML / Instancia para crear nuestros modelo de prediccion.
 
@@ -134,7 +134,6 @@ def main(): # define funcion main
 
    # combina turismo y clima
     df_merged = df_turismo.merge(df_clima_anual, on="ANNIOS", how="left")    # combina el df turismo con el de clima usando la columna ANNIOS
-
     # hace una limpieza por si habia algo
     df_merged = df_merged.replace(r"\s+", "", regex=True)
 
@@ -185,8 +184,9 @@ def main(): # define funcion main
 if __name__ == "__main__":  # Verifica si este archivo está siendo ejecutado directamente,Si es así llama a la función main(), evitando que el codigo se ejecute automaticamente cuando es importado desde otro archivo
     main()
 
-"""
+
 #----------------------------------------------------------------------------------------------------------------------#
+"""
 # Clase: Visualizador
  #mapa_paises
 ruta_mapa = r"..\data\processed\Coordenadas_Paises.csv"
@@ -206,3 +206,4 @@ viz_mapa_03.heatmap_paises()
 ruta = r"..\data\processed\zonas_aereas_clean.csv"
 viz = visualizador(ruta)
 viz.generar_barras_automaticas()
+"""
