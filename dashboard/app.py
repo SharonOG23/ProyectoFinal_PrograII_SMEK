@@ -12,10 +12,10 @@ from scr.visualizacion.visualizador import visualizador
 from streamlit_folium import st_folium
 
 # ===== Rutas de tus CSV =====
-RUTA_COORDENADAS = r"C:\Proyecto_final_Programacion2\ProyectoFinal_PrograII_SMEK\data\processed\Coordenadas_Paises.csv"
-RUTA_TENDENCIA = r"C:\Proyecto_final_Programacion2\ProyectoFinal_PrograII_SMEK\data\processed\turismo_anios_clean.csv"
-RUTA_HEATMAP = r"C:\Proyecto_final_Programacion2\ProyectoFinal_PrograII_SMEK\data\processed\turismo_anios_clean.csv"
-RUTA_BARRAS = r"C:\Proyecto_final_Programacion2\ProyectoFinal_PrograII_SMEK\data\processed\zonas_aereas_clean.csv"
+RUTA_COORDENADAS = os.path.join(BASE_DIR, "data", "processed", "Coordenadas_Paises.csv")
+RUTA_TENDENCIA   = os.path.join(BASE_DIR, "data", "processed", "turismo_anios_clean.csv")
+RUTA_HEATMAP     = os.path.join(BASE_DIR, "data", "processed", "turismo_anios_clean.csv")
+RUTA_BARRAS      = os.path.join(BASE_DIR, "data", "processed", "zonas_aereas_clean.csv")
 
 # ===== Dashboard =====
 st.title("Dashboard de Turismo en Costa Rica")
