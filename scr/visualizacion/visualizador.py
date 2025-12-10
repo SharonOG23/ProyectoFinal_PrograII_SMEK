@@ -114,7 +114,8 @@ class visualizador:
     # ---------------------------------------------------------------
     # GRÁFICOS
     # ---------------------------------------------------------------
-    #este grafico se genera apartir del archivo Coordenadas_Pises.csv
+    #Este grafico se genera apartir del archivo Coordenadas_Pises.csv
+    #Nos va a generar un mapa el cual vamos a poder el pais de origen de los turistas
 
     def mapa_paises(self):
 
@@ -143,6 +144,7 @@ class visualizador:
         return mapa
 
     #este grafico se genera apartir de el archivo turismo_anios_clean.csv
+    #Nos va a generar una tendencia total, nos muestra cuales han sido los puntos mas altos y bajos del tursimo en Costa Rica
     def grafico_tendencia_total(self):
         df = pd.read_csv(self.ruta_archivo)
 
@@ -153,7 +155,7 @@ class visualizador:
         plt.ylabel("Turistas")
         plt.grid(True)
         plt.show()
-
+    # nos va a detectar tendencias, comparar paises, identificar picos y caidas
     def heatmap_paises(self):
         df = pd.read_csv(self.ruta_archivo)
 
@@ -168,10 +170,10 @@ class visualizador:
         df_temp = df.set_index("ANNIOS").drop(columns=["TOTAL"])
 
         plt.figure(figsize=(14, 8))
-        sns.heatmap(df_temp, cmap="YlGnBu")
+        sns.heatmap(df_temp, cmap="YlGnBu") # Amarillo=valores altos, azul=valores bajos
         plt.title("Heatmap de turismo por país y año")
         plt.show()
-
+#Este grafico se genera apartir de CSV zonas_area_clean.csv, este lo que nos va a dar son varios graficos para ver el ingreso de tursimo en los diferentes aeropuertos
     def generar_barras_automaticas(self):
         import matplotlib.pyplot as plt
         import pandas as pd
