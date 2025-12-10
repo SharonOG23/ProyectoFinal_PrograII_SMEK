@@ -21,7 +21,7 @@ class ModeloML:
             print(f"Error cargando CSV: {e}") # imprime el error
             return None         # si hay error, imprime un mensaje de que no se realizo satisfactoriamente
 
-    def _init_(self, df, columna_objetivo):           # constructor
+    def __init__(self, df, columna_objetivo):           # constructor
         self.df = df.copy()                             # copia del dataframe
         self.columna_objetivo = columna_objetivo         # columna a trabajar
 

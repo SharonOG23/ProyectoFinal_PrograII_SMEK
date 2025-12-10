@@ -132,10 +132,10 @@ def main():
     df_merged = df_turismo.merge(df_clima_anual, on="ANNIOS", how="left")
 
     # hace una limpieza por si habia algo
-    df_merged = df_merged.replace("\s+", "", regex=True)
+    df_merged = df_merged.replace(r"\s+", "", regex=True)
 
     for col in df_merged.columns: # convierte en numerico
-        df_merged[col] = pd.to_numeric(df_merged[col], errors="ignore") #mantiene dato original y no lanza error
+        df_merged[col] = pd.to_numeric(df_merged[col], errors="coerce") #mantiene dato original y no lanza error
 
     df_merged = df_merged.fillna(0) # remplaza nulos por 0
 
