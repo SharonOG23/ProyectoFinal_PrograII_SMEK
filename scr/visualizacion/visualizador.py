@@ -180,7 +180,9 @@ class visualizador:
             plt.tight_layout()
             plt.show()
 
- #Scrip de prueba de graficos
+
+
+#Scrip de prueba de graficos
  #mapa_paises
 ruta_mapa = r"C:\Proyecto_final_Programacion2\ProyectoFinal_PrograII_SMEK\data\processed\Coordenadas_Paises.csv"
 viz_mapa=visualizador(ruta_mapa)
