@@ -204,17 +204,17 @@ class visualizador:
 #Scrip de prueba de graficos
 
 #tendencia total
-ruta_mapa2 = r"C:\Proyecto_final_Programacion2\ProyectoFinal_PrograII_SMEK\data\processed\turismo_anios_clean.csv"
-viz_mapa_02 = visualizador(ruta_mapa2)
-viz_mapa_02.grafico_tendencia_total()
+#ruta_mapa2 = r"C:\Proyecto_final_Programacion2\ProyectoFinal_PrograII_SMEK\data\processed\turismo_anios_clean.csv"
+#viz_mapa_02 = visualizador(ruta_mapa2)
+#viz_mapa_02.grafico_tendencia_total()
 
 #heatmap_paises
-ruta_mapa3= r"C:\Proyecto_final_Programacion2\ProyectoFinal_PrograII_SMEK\data\processed\turismo_anios_clean.csv"
-viz_mapa_03 = visualizador(ruta_mapa3)
-viz_mapa_03.heatmap_paises()
+#ruta_mapa3= r"C:\Proyecto_final_Programacion2\ProyectoFinal_PrograII_SMEK\data\processed\turismo_anios_clean.csv"
+#viz_mapa_03 = visualizador(ruta_mapa3)
+#viz_mapa_03.heatmap_paises()
 
 #grafico de barras
-ruta = r"C:\Proyecto_final_Programacion2\ProyectoFinal_PrograII_SMEK\data\processed\zonas_aereas_clean.csv"
-viz = visualizador(ruta)
-viz.generar_barras_automaticas()
+#ruta = r"C:\Proyecto_final_Programacion2\ProyectoFinal_PrograII_SMEK\data\processed\zonas_aereas_clean.csv"
+#viz = visualizador(ruta)
+#viz.generar_barras_automaticas()
 
