@@ -112,25 +112,27 @@ print(f"Tabla Total_Ingresos_Anuales \n {consulta_Registro}")
 #----------------------------------------------------------------------------------------------------------------------#
 # Clase: Modelo ML / Instancia para crear nuestros modelo de prediccion.
 
-# Define de funcion principal
-def main():
+# ModeloML y Utilidades
+
+# define de funcion principal
+def main(): # define funcion main
 
     # Carga datos
-    df_turismo = Utilidades.cargar_csv("../data/processed/turismo_anios_clean.csv")
-    df_clima = Utilidades.cargar_csv("../data/processed/clima_resumen_anual.csv")
+    df_turismo = Utilidades.cargar_csv("../data/processed/turismo_anios_clean.csv")  # lee el csv turismo
+    df_clima = Utilidades.cargar_csv("../data/processed/clima_resumen_anual.csv")     # lee el csv clima
 
-    if df_turismo is None or df_clima is None:
-        print("No se pudieron cargar los CSV.")
-        return
+    if df_turismo is None or df_clima is None:    # verifica si hay error, or es que si cualquiera es none, se considera como fallo
+        print("No se pudieron cargar los CSV.")   # si hubo error ¿, muestra un mensaje que dice "no se pudieron cargar los datos"
+        return          # termina ejecucion
 
     # Prepara clima, seleccionando los las columnas a utilizar del df
-    df_clima_anual = df_clima[["year", "temp_avg"]].rename(columns={
+    df_clima_anual = df_clima[["year", "temp_avg"]].rename(columns={   # toma del df clima solo las clumnas ANNIOS y temperatura_promedio. el rename cambia los nombre a las columnas
         "year": "ANNIOS",
         "temp_avg": "temperatura_promedio"
     })
 
    # combina turismo y clima
-    df_merged = df_turismo.merge(df_clima_anual, on="ANNIOS", how="left")
+    df_merged = df_turismo.merge(df_clima_anual, on="ANNIOS", how="left")    # combina el df turismo con el de clima usando la columna ANNIOS
 
     # hace una limpieza por si habia algo
     df_merged = df_merged.replace(r"\s+", "", regex=True)
@@ -144,16 +146,42 @@ def main():
     print(df_merged.head()) # muestra las primeras 5 filas listas
 
     # Entrenar modelos
-    modelo = ModeloML(df_merged, "TOTAL")
-    resultados = modelo.entrenar_todos()
+    modelo = ModeloML(df_merged, "TOTAL")   # prepara el modelo listo para usar
+    resultados = modelo.entrenar_todos()   # entrena con KNN, regresion y random forest y devuelve errores
 
     print("RESULTADOS")
     for nombre, mse in resultados.items(): # Recorre los resultados
         print(f"{nombre}: {mse}") # muestra el nombre del modelo y su valor
 
-    print("\nPrueba completada")
+ # Prediccion de Turistas
 
-if __name__ == "__main__":
+# se crea un diccionario llamado valores nuevos,cada valor es un columna que se va a predecir
+    nuevos_valores = {
+        "ANNIOS": 2025,
+        "temperatura_promedio": 19.7,
+        "AMARICADELNORTE": 1200000,
+        "CANADA": 150000,
+        "ESTADOSUNIDOS": 900000,
+        "MAXICO": 110000,
+        "AMARICACENTRAL": 800000,
+        "BELICE": 20000,
+        "ELSALVADOR": 50000,
+        "GUATEMALA": 60000,
+        "HONDURAS": 30000,
+        "NICARAGUA": 45000,
+        "PANAMA": 70000,
+        "AMARICADELSUR": 90000,
+        "CARIBE": 25000,
+        "EUROPA": 500000,
+        "OTRASZONAS": 30000
+    }
+
+    prediccion = modelo.predecir(nuevos_valores)   # llama al metodo predecir y pasa los valore nuevos
+
+    print(f"Predicción total de turistas: {prediccion:,.0f} \n")   # imprime la prediccion final, con el mensaje "Prediccion total de turistas:"
+
+    print("\nPrueba completada")    # imprime un mensaje de ejecuion completa
+if __name__ == "__main__":  # Verifica si este archivo está siendo ejecutado directamente,Si es así llama a la función main(), evitando que el codigo se ejecute automaticamente cuando es importado desde otro archivo
     main()
 
 #----------------------------------------------------------------------------------------------------------------------#

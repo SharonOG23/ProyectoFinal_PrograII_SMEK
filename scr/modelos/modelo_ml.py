@@ -60,3 +60,27 @@ class ModeloML:
         y_pred = modelo.predict(X_test) # predice valores de y para x
         mse = mean_squared_error(y_test, y_pred) # mide los errores del modelo
         return modelo, mse   # devuelve el modelo entrenado listo y errores de evaluacion
+
+# Prediccion
+
+    def predecir(self, nuevos_valores):  # define metodo predecir dentro de la clase
+
+        columnas_esperadas = [c for c in self.df.columns if c != self.columna_objetivo]   # crea lista de columnas esperadas con las clumnas del df sin la objetivo
+
+        df_nuevo = pd.DataFrame([{}])   # crea un nuevo df donde se guardaran los valores para la prediccion
+        for col in columnas_esperadas:   # recorre las columnas y las agrega al df nuevo con valores en 0.
+            df_nuevo[col] = 0
+
+        for col, val in nuevos_valores.items():    # recorre nuevos valores
+            if col in df_nuevo.columns:   # si encuentra "col" en las clumnas, sustituye por el valor correspondiente
+                df_nuevo[col] = val
+            else:
+                print(f"Advertencia: La columna '{col}' no existe en el modelo y será ignorada.")    # si no la encuentra imprime el mensaje
+
+        modelo = LinearRegression()   # crea una nueva instancia
+        X_train, X_test, y_train, y_test = self.preparar_datos()    # llama al metodo "preparar datos"
+        modelo.fit(X_train, y_train)    # entrena el modelo con los datos de entrenamiento
+
+        pred = modelo.predict(df_nuevo)[0]  # usa el modelo para predecir sobre "df nuevo"
+
+        return pred   # devuelve el valor numerico de la prediccion
