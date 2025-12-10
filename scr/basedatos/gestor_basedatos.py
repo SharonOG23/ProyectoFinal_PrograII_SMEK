@@ -185,7 +185,8 @@ class BD:
 
 
 
-"""Script de Pruebas
+"""
+Script de Pruebas
 pruebas=BD()
 pruebas.crear_tabla()
 

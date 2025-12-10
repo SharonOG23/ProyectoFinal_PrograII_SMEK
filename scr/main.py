@@ -38,6 +38,7 @@ eda_zonas.ejecutar_eda('zonas_aereas_clean.csv')
 
 """
 
+"""
 #----------------------------------------------------------------------------------------------------------------------#
 #Ejecucion base datos(Actualizacion)
 
@@ -104,6 +105,8 @@ print(f"Tabla MedioIngreso \n {consulta_medioIngreso}")
 #Consulta Total_Ingresos_Anuales
 consulta_Registro=basedatos.consultar_tabla('Total_Ingresos_Anuales')
 print(f"Tabla Total_Ingresos_Anuales \n {consulta_Registro}")
+
+"""
 
 #----------------------------------------------------------------------------------------------------------------------#
 # Clase: Modelo ML / Instancia para crear nuestros modelo de prediccion.
