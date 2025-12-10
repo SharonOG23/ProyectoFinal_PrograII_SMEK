@@ -112,8 +112,10 @@ class visualizador:
     # ---------------------------------------------------------------
     # GRÁFICOS
     # ---------------------------------------------------------------
+    #este grafico se genera apartir del archivo Coordenadas_Pises.csv
+    def mapa_paises(self):
+        df = pd.read_csv(self.ruta_archivo)
 
-    def mapa_paises(self, df):
         plt.figure(figsize=(10, 6))
         plt.scatter(df["Longitud"], df["Latitud"])
 
@@ -125,30 +127,76 @@ class visualizador:
         plt.ylabel("Latitud")
         plt.grid(True)
         plt.show()
+    #este grafico se genera apartir de el archivo turismo_anios_clean.csv
+    def grafico_tendencia_total(self):
+        df = pd.read_csv(self.ruta_archivo)
 
-    def grafico_tendencia_total(self, df):
         plt.figure(figsize=(10, 5))
-        plt.plot(df["ANINOS"], df["TOTAL"], marker="o")
+        plt.plot(df["ANNIOS"], df["TOTAL"], marker="o")
         plt.title("Tendencia anual del turismo total en Costa Rica")
         plt.xlabel("Año")
         plt.ylabel("Turistas")
         plt.grid(True)
         plt.show()
 
-    def heatmap_paises(self, df):
-        df_temp = df.set_index("ANINOS").drop(columns=["TOTAL"])
+    def heatmap_paises(self):
+        df = pd.read_csv(self.ruta_archivo)
+
+        # LIMPIEZA: eliminar espacios dentro de números
+        df = df.replace({',': '', ' ': ''}, regex=True)
+
+        # Convertir todo excepto ANINOS y TOTAL a numérico
+        for col in df.columns:
+            if col not in ["ANNIOS", "TOTAL"]:
+                df[col] = pd.to_numeric(df[col], errors="coerce")
+
+        df_temp = df.set_index("ANNIOS").drop(columns=["TOTAL"])
+
         plt.figure(figsize=(14, 8))
         sns.heatmap(df_temp, cmap="YlGnBu")
         plt.title("Heatmap de turismo por país y año")
         plt.show()
 
-    def grafico_barras_horizontales(self, columna, titulo="Barras Horizontales por Zona"):
-        plt.figure(figsize=(10, 7))
-        plt.barh(self.df["IZONAS"], self.df[columna])
-        plt.title(titulo)
-        plt.xlabel(columna)
-        plt.ylabel("Zonas")
-        plt.tight_layout()
-        plt.show()
+    def generar_barras_automaticas(self):
+        import matplotlib.pyplot as plt
+        import pandas as pd
 
+        # Cargar CSV
+        df = pd.read_csv(self.ruta_archivo)
+
+        # Detectar columnas numéricas excepto IZONAS
+        columnas_numericas = [
+            col for col in df.columns
+            if col != "IZONAS" and pd.api.types.is_numeric_dtype(df[col])
+        ]
+
+        # Generar un gráfico por cada columna
+        for col in columnas_numericas:
+            plt.figure(figsize=(10, 7))
+            plt.barh(df["IZONAS"], df[col])
+            plt.title(f"Llegadas por zona - {col}")
+            plt.xlabel(col)
+            plt.ylabel("Zonas")
+            plt.tight_layout()
+            plt.show()
+
+ #Scrip de prueba de graficos
+ #mapa_paises
+ruta_mapa = r"C:\Proyecto_final_Programacion2\ProyectoFinal_PrograII_SMEK\data\processed\Coordenadas_Paises.csv"
+viz_mapa=visualizador(ruta_mapa)
+viz_mapa.mapa_paises()
+#tendencia total
+ruta_mapa2 = r"C:\Proyecto_final_Programacion2\ProyectoFinal_PrograII_SMEK\data\processed\turismo_anios_clean.csv"
+viz_mapa_02 = visualizador(ruta_mapa2)
+viz_mapa_02.grafico_tendencia_total()
+
+#heatmap_paises
+ruta_mapa3= r"C:\Proyecto_final_Programacion2\ProyectoFinal_PrograII_SMEK\data\processed\turismo_anios_clean.csv"
+viz_mapa_03 = visualizador(ruta_mapa3)
+viz_mapa_03.heatmap_paises()
+
+#grafico de barras
+ruta = r"C:\Proyecto_final_Programacion2\ProyectoFinal_PrograII_SMEK\data\processed\zonas_aereas_clean.csv"
+viz = visualizador(ruta)
+viz.generar_barras_automaticas()
 
