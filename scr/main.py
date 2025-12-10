@@ -159,20 +159,20 @@ if __name__ == "__main__":
 #----------------------------------------------------------------------------------------------------------------------#
 # Clase: Visualizador
  #mapa_paises
-ruta_mapa = r"C:\Proyecto_final_Programacion2\ProyectoFinal_PrograII_SMEK\data\processed\Coordenadas_Paises.csv"
+ruta_mapa = r"..\data\processed\Coordenadas_Paises.csv"
 viz_mapa=visualizador(ruta_mapa)
 viz_mapa.mapa_paises()
 #tendencia total
-ruta_mapa2 = r"C:\Proyecto_final_Programacion2\ProyectoFinal_PrograII_SMEK\data\processed\turismo_anios_clean.csv"
+ruta_mapa2 = r"..\data\processed\turismo_anios_clean.csv"
 viz_mapa_02 = visualizador(ruta_mapa2)
 viz_mapa_02.grafico_tendencia_total()
 
 #heatmap_paises
-ruta_mapa3= r"C:\Proyecto_final_Programacion2\ProyectoFinal_PrograII_SMEK\data\processed\turismo_anios_clean.csv"
+ruta_mapa3= r"..\data\processed\turismo_anios_clean.csv"
 viz_mapa_03 = visualizador(ruta_mapa3)
 viz_mapa_03.heatmap_paises()
 
 #grafico de barras
-ruta = r"C:\Proyecto_final_Programacion2\ProyectoFinal_PrograII_SMEK\data\processed\zonas_aereas_clean.csv"
+ruta = r"..\data\processed\zonas_aereas_clean.csv"
 viz = visualizador(ruta)
 viz.generar_barras_automaticas()
